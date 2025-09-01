@@ -1,0 +1,16 @@
+
+venv/
+.env
+
+data/
+vectordb/
+
+
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+.streamlit/secrets.toml
