@@ -1,17 +1,21 @@
-python-dotenv
-streamlit
-langchain
-langchain-community
-langchain-openai
-langchain-text-splitters
-langchain-chroma
-chromadb>=0.5.0
-pypdf
-docx2txt
-tiktoken
-sentence-transformers
-python_version < "3.12"
-streamlit>=1.29
-chromadb==0.4.24
-pysqlite3-binary==0.5.4
+streamlit==1.36.0
+python-dotenv==1.0.1
 
+# LangChain + Chroma (versiones que se llevan bien entre sí)
+langchain==0.3.27
+langchain-core==0.3.74
+langchain-text-splitters==0.3.9
+langchain-huggingface==0.3.1
+langchain-openai==0.2.12
+langchain-chroma==0.2.5
+chromadb==1.0.16
+duckdb>=0.10.0
+
+
+
+# Lectura de ficheros
+pypdf==4.3.1
+docx2txt==0.8
+
+# Utilidades
+huggingface-hub>=0.34.4

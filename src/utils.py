@@ -4,6 +4,7 @@ from typing import List, Dict, Any, Tuple
 import docx2txt
 from pypdf import PdfReader
 
+
 from config import PERSIST_DIR, DATA_DIR
 
 # -------- Lectura de archivos --------
@@ -46,13 +47,18 @@ def chunk_stats(chunks: List[str]) -> dict:
         "max_len": max(lengths),
     }
 
-# -------- Gestión de índice con chromadb nativo (sin LangChain) --------
-import chromadb
-from chromadb.config import Settings
-
+# -------- Gestión de índice con chromadb nativo (lazy imports) --------
 def _open_collection():
+    # IMPORTS AQUÍ (no en top-level) para que sitecustomize.py tenga efecto primero
+    import chromadb
+    from chromadb.config import Settings
+
     os.makedirs(PERSIST_DIR, exist_ok=True)
-    client = chromadb.PersistentClient(path=PERSIST_DIR, settings=Settings(allow_reset=True))
+    client = chromadb.PersistentClient(
+        path=PERSIST_DIR,
+        settings=Settings(allow_reset=True,
+                          chroma_db_impl="duckdb+parquet",),
+    )
     try:
         col = client.get_collection("docs")
     except Exception:
@@ -63,16 +69,20 @@ def list_index_rows() -> Tuple[list, list, list]:
     """Devuelve (sources_unicos, ids, filas) para pintar la UI."""
     client, col = _open_collection()
     try:
-        raw = col.get(include=["metadatas", "ids"])
+        # NO pedir "ids" aquí; Chroma los devuelve siempre
+        raw = col.get(include=["metadatas"])
     except Exception:
         return [], [], []
+
     ids: list[str] = raw.get("ids", [])
     metas: list[Dict[str, Any]] = raw.get("metadatas", [])
+
     rows = []
     for i in range(len(ids)):
         md = metas[i] or {}
         md["id"] = ids[i]
         rows.append(md)
+
     sources = sorted({r.get("source", "desconocido") for r in rows})
     return sources, ids, rows
 
@@ -88,7 +98,6 @@ def delete_all_index() -> None:
     try:
         client.delete_collection("docs")
     except Exception:
-        # fallback: recrear
         try:
             client.get_collection("docs").delete(where={})
         except Exception:

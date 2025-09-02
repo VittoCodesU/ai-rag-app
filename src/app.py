@@ -4,9 +4,8 @@ from dotenv import load_dotenv
 from utils import list_index_rows, delete_by_sources, delete_all_index, list_data_files, delete_data_files
 
 
-
-
-
+import sqlite3, streamlit as st
+st.sidebar.caption(f"sqlite3 -> {sqlite3.__file__}")
 
 load_dotenv()
 
