@@ -37,9 +37,10 @@ def validate_config():
 
 errs, warns = validate_config()
 for w in warns:
-    st.sidebar.warning("warning!", +w, icon="⚠️")
+    st.sidebar.warning(w, icon="⚠️")
 for e in errs:
-    st.sidebar.error("error", +e, icon="❌")
+    st.sidebar.error(e, icon="❌")
+
 if errs:
     st.stop()
 
