@@ -5,7 +5,9 @@ from utils import list_index_rows, delete_by_sources, delete_all_index, list_dat
 
 
 import sqlite3, streamlit as st
-st.sidebar.caption(f"sqlite3 -> {sqlite3.__file__}")
+if not st.session_state.get("_page_config_done"):
+    st.set_page_config(page_title="RAG Chatbot", page_icon="📄", layout="wide")
+    st.session_state["_page_config_done"] = True
 
 load_dotenv()
 
