@@ -9,9 +9,9 @@ from utils import (
 # =========================
 # PAGE CONFIG (primero SIEMPRE)
 # =========================
-if not st.session_state.get("_page_config_done"):
-    st.set_page_config(page_title="RAG Chatbot", page_icon="📄", layout="wide")
-    st.session_state["_page_config_done"] = True
+
+st.set_page_config(page_title="RAG Chatbot", page_icon="📄", layout="wide")
+st.session_state["_page_config_done"] = True
 
 import sqlite3  # CHANGES: sin volver a importar streamlit
 
